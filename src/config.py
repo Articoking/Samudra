@@ -230,3 +230,16 @@ class EvalConfig:
 
         with open(save_path, "w") as f:
             yaml.dump(config_dict, f, default_flow_style=False)
+
+@dataclass
+class PerturbationConfig:
+    perturbation_type: str = "noise"
+    noise_level: float = 0.1 # Multiplier for std dev of each channel
+
+@dataclass
+class EnsembleConfig(EvalConfig):
+    """
+    Extends EvalConfig for use in generating ensembles of simulations.
+    """
+    n_members: int = 10
+    perturbation: PerturbationConfig = field(default_factory=PerturbationConfig)

@@ -202,6 +202,11 @@ class NoisyEnsemble:
                      "ensemble members")
         logging.info(f"num_model_steps_forward: {self.num_model_steps_forward}")
 
+        # TODO: Use self.perturbator to generate ensemble member ICs
+        self.perturbator.apply_perturbation(self.inference_dataset)
+        
+        # TODO: Add Stepper loop to step forward each of the members
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, required=True)

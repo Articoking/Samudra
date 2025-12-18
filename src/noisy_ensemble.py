@@ -156,11 +156,12 @@ class NoisyEnsemble:
         self.num_model_steps_forward = cfg.num_model_steps_forward
         self.save_zarr = cfg.save_zarr
         self.model_path = cfg.ckpt_path
-        self.init_inference_store()
 
         # Perturbation
         perturbator = GaussianNoisePerturbator(cfg)
         self.perturbator = perturbator
+
+        self.init_inference_store()
         
 
     def init_inference_store(self):
@@ -172,7 +173,7 @@ class NoisyEnsemble:
         inference_data = self.data.sel(
             time=slice(self.inference_time.start_time, self.inference_time.end_time)
         )
-        self.inference_dataset = InferenceDataset(
+        self.unperturbed_dataset = InferenceDataset(
             inference_data,
             self.prognostic_vars,
             self.boundary_vars,
@@ -180,6 +181,10 @@ class NoisyEnsemble:
             self.wet_surface,
             self.hist,
         )
+
+        # TODO: Use self.perturbator to generate ensemble member ICs
+        self.ens_inference_datasets = self.perturbator.apply_perturbation(
+            self.unperturbed_dataset)
 
     def run(self) -> None:
         # TODO: Use Rollout class and the InferenceDataset from __init__ to
@@ -189,7 +194,7 @@ class NoisyEnsemble:
         self.ensemble_inference()
         total_time = time.time() - start_time
         total_time_str = str(datetime.timedelta(seconds=int(total_time)))
-        logging.info(f"Rollout time {total_time_str}")
+        logging.info(f"Ensemble rollout time {total_time_str}")
 
     @torch.no_grad()
     def ensemble_inference(self):
@@ -202,10 +207,21 @@ class NoisyEnsemble:
                      "ensemble members")
         logging.info(f"num_model_steps_forward: {self.num_model_steps_forward}")
 
-        # TODO: Use self.perturbator to generate ensemble member ICs
-        self.perturbator.apply_perturbation(self.inference_dataset)
-        
-        # TODO: Add Stepper loop to step forward each of the members
+        n_digits = len(str(self.perturbator.n_members-1)) # Digits needed to number all members
+        for member_idx, (inference_ds, ds_length) in enumerate(self.ens_inference_datasets):
+            logging.info(
+                f"Doing inference for member #{member_idx} [{member_idx + 1}/{self.perturbator.n_members}]"
+                )
+            Stepper.inference(
+                model=self.model,
+                dataset=inference_ds,
+                epoch=0,
+                output_dir=self.output_dir/str(member_idx).zfill(n_digits),
+                model_path=self.model_path,
+                num_model_steps_forward=self.num_model_steps_forward,
+                record_every=self.record_every,
+                save_zarr=self.save_zarr,
+            )
 
 def main():
     parser = argparse.ArgumentParser()

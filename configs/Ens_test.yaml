@@ -7,7 +7,7 @@ inference:
 ckpt_path: /Odyssey/private/g22cossi/Samudra/Checkpoints/samudra_thermo_seed1.pt # FILL IN
 num_model_steps_forward: 20 # Number of steps to run forward pass at a time
 record_every: 20  # Write to zarr every record_every steps (if save_zarr is true)
-n_members: 20 # Number of ensemble members
+n_members: 5 # Number of ensemble members
 
 experiment:
   name: ENS_TEST

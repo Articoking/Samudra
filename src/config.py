@@ -234,7 +234,7 @@ class EvalConfig:
 @dataclass
 class PerturbationConfig:
     perturbation_type: str = "GaussianNoise"
-    noise_level: float = 0.1 # Multiplier for std dev of each channel
+    noise_level: float = 1 # Multiplier for std dev of each channel
 
 @dataclass
 class EnsembleConfig(EvalConfig):

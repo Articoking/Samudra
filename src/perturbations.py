@@ -23,10 +23,15 @@ class Perturbator(ABC):
         pass
 
 class GaussianNoisePerturbator(Perturbator):
-    def __init__(self, cfg: EnsembleConfig):
+    def __init__(
+            self,
+            cfg: EnsembleConfig,
+            stds: xr.Dataset = None
+            ):
         super().__init__(cfg)
         self.noise_level = cfg.perturbation.noise_level
-    
+        self.stds = stds # Already preformatted stds Dataset
+
     @property
     def type(self) -> str:
         return "GaussianNoise"
@@ -54,11 +59,22 @@ class GaussianNoisePerturbator(Perturbator):
             perturbed_ids = copy.copy(dataset)
             
             # Create perturbation of same size as ocean state tensor
-            sigma = self.noise_level # TODO: Adapt sigma to each variable
+            if self.stds is None:
+                sigma = {var: self.noise_level
+                         for var in initial_state.data_vars}
+            else:
+                # Adapt sigma to every variable
+                sigma = {var: self.noise_level * self.stds[var]
+                         for var in initial_state.data_vars}
+
             noise = xr.Dataset(
                 {
                     var: xr.DataArray(
-                        np.random.normal(0, sigma, size=initial_state[var].shape),
+                        np.random.normal(
+                            loc = 0, 
+                            scale = sigma[var],
+                            size = initial_state[var].shape
+                            ),
                         dims=initial_state[var].dims,
                         coords=initial_state[var].coords,
                     )

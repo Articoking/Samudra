@@ -158,7 +158,7 @@ class NoisyEnsemble:
         self.model_path = cfg.ckpt_path
 
         # Perturbation
-        perturbator = GaussianNoisePerturbator(cfg)
+        perturbator = GaussianNoisePerturbator(cfg, stds=self.data_std)
         self.perturbator = perturbator
 
         self.init_inference_store()
@@ -239,8 +239,6 @@ def main():
         overrides["ckpt_path"] = args.ckpt_path
     if args.save_zarr:
         overrides["save_zarr"] = args.save_zarr
-    if args.n_members:
-        overrides["n_members"] = args.n_members
 
     # Load config from YAML
     cfg = EnsembleConfig.from_yaml(args.config, overrides)

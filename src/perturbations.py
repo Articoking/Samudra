@@ -56,7 +56,7 @@ class GaussianNoisePerturbator(Perturbator):
             ]
         for _ in range(self.n_members):
             # Init perturbed InferenceDataset
-            perturbed_ids = copy.copy(dataset)
+            perturbed_ids = copy.deepcopy(dataset)
             
             # Create perturbation of same size as ocean state tensor
             if self.stds is None:

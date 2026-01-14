@@ -1,0 +1,51 @@
+debug: false
+save_zarr: true
+disk_mode: true
+inference:
+  start_time: "2015-01-01"
+  end_time: "2020-01-01"
+ckpt_path: /Odyssey/private/g22cossi/Samudra/Checkpoints/samudra_thermo_seed1.pt # FILL IN
+num_model_steps_forward: 146 # Number of steps to run forward pass at a time
+record_every: 146  # Write to zarr every record_every steps (if save_zarr is true)
+n_members: 25 # Number of ensemble members
+
+experiment:
+  name: ENS_OM4_thermo
+  sub_name: control
+  rand_seed: 5
+  base_output_dir: Rollouts
+  data_dir: /Odyssey/public/Samudra # FILL IN
+  network: samudra
+  prognostic_vars_key: thermo # thermo_dynamic or thermo
+  boundary_vars_key: hfds_anom
+
+data:
+  data_path: OM4_Full.zarr # FILL IN
+  data_means_path: OM4_means.zarr # FILL IN
+  data_stds_path: OM4_stds.zarr # FILL IN
+  time_delta: 5
+  num_workers: 4
+  hist: 1
+
+
+unet:
+  ch_width: [158, 200, 250, 300, 400]
+  n_out: 154
+  dilation: [1, 2, 4, 8]
+  n_layers: [1, 1, 1, 1]
+  last_kernel_size: 3
+  pad: "circular"
+
+  core_block:
+    block_type: "conv_next_block"
+    kernel_size: 3
+    activation: "capped_gelu"
+    upscale_factor: 4
+    norm: "batch"
+
+  down_sampling_block: "avg_pool"
+  up_sampling_block: "bilinear_upsample"
+
+perturbation:
+  perturbation_type: "GaussianNoise"
+  noise_level: 0

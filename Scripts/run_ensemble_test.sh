@@ -12,5 +12,5 @@ IDS=(
 # Loop over IDs and run the command
 for ID in "${IDS[@]}"; do
   echo "Running ensemble: ${ID}"
-  python src/noisy_ensemble.py --config "./configs/ENS-${ID}.yaml"
+  python src/noisy_ensemble.py --config "./configs/ENS/ENS-${ID}.yaml"
 done

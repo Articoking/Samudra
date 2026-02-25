@@ -48,3 +48,7 @@ lint.pydocstyle.convention = "google"
 [tool.mypy]
 ignore_missing_imports = true
 check_untyped_defs = true
+
+[tool.setuptools.packages.find]
+where = ["."]  # Look for packages in the root
+include = ["samudra*"]  # Include the samudra package

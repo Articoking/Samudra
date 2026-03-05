@@ -7,11 +7,12 @@ import torch
 import xarray as xr
 from einops import rearrange
 
-from constants import DEPTH_I_LEVELS, DEPTH_LEVELS, MASK_VARS, TensorMap
+from samudra.constants import DEPTH_I_LEVELS, DEPTH_LEVELS, MASK_VARS, TensorMap
 
 
 def extract_wet_mask(data, outputs, hist):
-    wet_mask = data[MASK_VARS]
+    wet_mask = data[MASK_VARS] # There are variables in `data` called mask_0, ..., mask_18, for each depth level
+    # Remove `time` dimension and convert to numpy
     if "time" in wet_mask.dims:
         wet_mask_np = wet_mask.isel(time=0).to_array().to_numpy()
         wet_surface_mask_np = wet_mask[MASK_VARS[0]].isel(time=0).to_numpy()
@@ -19,6 +20,10 @@ def extract_wet_mask(data, outputs, hist):
         wet_mask_np = wet_mask.to_array().to_numpy()
         wet_surface_mask_np = wet_mask[MASK_VARS[0]].to_numpy()
 
+    """
+    Create a list of depth indexes such that for each variable in `outputs`
+    we have the corresponding depth index.
+    """
     depth_ind = []
     for var_depth_i in outputs:
         var_split = var_depth_i.split("_")
@@ -27,6 +32,15 @@ def extract_wet_mask(data, outputs, hist):
         else:
             depth_ind.append(int(var_split[-1]))
 
+    """
+    With that list, create boolean numpy arrays such that each variable is
+    aligned with a mask for its depth.
+
+    `wet_surface` is the mask for forcings (it only considers depth_idx=0)
+    `wet_inp` is the mask for the input state. It's the same mask repeated
+    (hist+1) times along the first dimension to take into consideration that the
+    input is a stack of timesteps.
+    """
     wet_inp = torch.from_numpy(wet_mask_np[depth_ind])
     wet_surface = torch.from_numpy(wet_surface_mask_np)
     wet_inp = torch.concat([wet_inp] * (hist + 1), dim=0)

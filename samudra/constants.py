@@ -4,6 +4,12 @@ from typing import Dict, Optional
 import torch
 import xarray as xr
 
+# Pre-treated OM4 URLs (taken from original repo)
+OM4_MEANS_URL = "https://nyu1.osn.mghpcc.org/m2lines-pubs/Samudra/OM4_means"
+OM4_STDS_URL = "https://nyu1.osn.mghpcc.org/m2lines-pubs/Samudra/OM4_stds"
+OM4_DATA_URL = "https://nyu1.osn.mghpcc.org/m2lines-pubs/Samudra/OM4"
+
+
 # Experiment variables
 # Assumption that all 3D variables are appended with depth_i_levels
 # and all 2D variables do not have any digits / underscores in their names

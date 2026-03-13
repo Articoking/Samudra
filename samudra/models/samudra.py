@@ -263,3 +263,24 @@ class Samudra(BaseModel):
                     fts += temp[int(2 * self.num_steps - count - 1)]
                     count += 1
         return torch.where(self.wet, fts, 0.0)
+
+    def forward(
+        self,
+        input_tensor: torch.Tensor
+        ) -> torch.Tensor:
+        """
+        Perform a single step of inference on a prepackaged Tensor.
+
+        Overrides forward method of samudra.models' BaseModel for compatibility with MoNOS.
+
+        Parameters
+        ----------
+        input_tensor : torch.Tensor
+            The prepackaged input Tensor
+
+        Returns
+        -------
+        torch.Tensor
+            The output tensor of Samudra.
+        """
+        return self.forward_once(input_tensor)

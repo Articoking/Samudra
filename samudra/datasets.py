@@ -7,8 +7,8 @@ import xarray as xr
 from einops import rearrange
 from torch.utils.data import Dataset
 
-from utils.data import Normalize
-from utils.device import get_device, using_gpu
+from samudra.utils.data import Normalize
+from samudra.utils.device import get_device, using_gpu
 
 
 class InferenceDataset(Dataset):

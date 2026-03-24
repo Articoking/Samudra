@@ -5,7 +5,7 @@ from typing import Sequence, Tuple
 import torch
 import torch.nn.functional as F
 
-from datasets import InferenceDataset, TrainData
+from samudra.datasets import InferenceDataset, TrainData
 
 
 def pairwise(iterable):

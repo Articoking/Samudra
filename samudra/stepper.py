@@ -3,10 +3,10 @@ from typing import Callable, Optional
 
 import torch
 
-from datasets import InferenceDataset, TrainData
-from utils.device import using_gpu
-from utils.outputs import InfOutput, TrainOutput, ValOutput
-from utils.writer import ZarrWriter
+from samudra.datasets import InferenceDataset, TrainData
+from samudra.utils.device import using_gpu
+from samudra.utils.outputs import InfOutput, TrainOutput, ValOutput
+from samudra.utils.writer import ZarrWriter
 
 
 class Stepper:

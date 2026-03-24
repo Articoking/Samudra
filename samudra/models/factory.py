@@ -2,8 +2,8 @@ from typing import Type
 
 import torch.nn as nn
 
-from models.activations import CappedGELU, ReLU
-from models.blocks import (
+from samudra.models.activations import CappedGELU, ReLU
+from samudra.models.blocks import (
     AvgPool,
     BilinearUpsample,
     ConvNeXtBlock,

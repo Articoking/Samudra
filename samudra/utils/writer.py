@@ -5,9 +5,9 @@ import torch
 import xarray as xr
 from einops import rearrange
 
-from constants import TensorMap
-from utils.data import Normalize
-from utils.outputs import InfOutput
+from samudra.constants import TensorMap
+from samudra.utils.data import Normalize
+from samudra.utils.outputs import InfOutput
 
 
 class ZarrWriter:

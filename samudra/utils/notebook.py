@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import xarray as xr
 
-from utils.data import rename_vars
+from samudra.utils.data import rename_vars
 
 
 def _combine_variables_by_level(ds, lev, combine_vars):

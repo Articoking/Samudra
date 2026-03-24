@@ -8,15 +8,15 @@ import traceback
 import torch
 import xarray as xr
 
-from config import EvalConfig
-from constants import BOUND_VARS_MAP, PROG_VARS_MAP, TensorMap, construct_metadata
-from datasets import InferenceDataset
-from models.samudra import Samudra
-from stepper import Stepper
-from utils.data import Normalize, extract_wet_mask, get_inference_steps, validate_data
-from utils.device import get_device, using_gpu
-from utils.distributed import set_seed
-from utils.logging import handle_logging, handle_warnings
+from samudra.config import EvalConfig
+from samudra.constants import BOUND_VARS_MAP, PROG_VARS_MAP, TensorMap, construct_metadata
+from samudra.datasets import InferenceDataset
+from samudra.models.samudra import Samudra
+from samudra.stepper import Stepper
+from samudra.utils.data import Normalize, extract_wet_mask, get_inference_steps, validate_data
+from samudra.utils.device import get_device, using_gpu
+from samudra.utils.distributed import set_seed
+from samudra.utils.logging import handle_logging, handle_warnings
 
 
 class Rollout:

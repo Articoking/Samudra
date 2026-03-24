@@ -18,22 +18,22 @@ from torch.utils.data import (
     RandomSampler,
 )
 
-from config import TrainConfig
-from constants import BOUND_VARS_MAP, PROG_VARS_MAP, TensorMap, construct_metadata
-from datasets import InferenceDataset, InferenceDatasets, TrainDataset
-from models.samudra import Samudra
-from stepper import Stepper, TrainOutput, ValOutput
-from utils.data import Normalize, extract_wet_mask, get_inference_steps, validate_data
-from utils.device import get_device, using_gpu
-from utils.distributed import (
+from samudra.config import TrainConfig
+from samudra.constants import BOUND_VARS_MAP, PROG_VARS_MAP, TensorMap, construct_metadata
+from samudra.datasets import InferenceDataset, InferenceDatasets, TrainDataset
+from samudra.models.samudra import Samudra
+from samudra.stepper import Stepper, TrainOutput, ValOutput
+from samudra.utils.data import Normalize, extract_wet_mask, get_inference_steps, validate_data
+from samudra.utils.device import get_device, using_gpu
+from samudra.utils.distributed import (
     all_reduce_mean,
     get_world_size,
     init_distributed_mode,
     is_main_process,
     set_seed,
 )
-from utils.logging import MetricLogger, SmoothedValue, handle_logging, handle_warnings
-from utils.train import (
+from samudra.utils.logging import MetricLogger, SmoothedValue, handle_logging, handle_warnings
+from samudra.utils.train import (
     CheckpointPaths,
     collate_inference_data,
     collate_train_data,

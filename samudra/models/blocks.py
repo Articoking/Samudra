@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from models.activations import CappedGELU
+from samudra.models.activations import CappedGELU
 
 
 class TransposedConvUpsample(torch.nn.Module):

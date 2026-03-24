@@ -5,16 +5,16 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from datasets import InferenceDataset, TrainData
-from models.blocks import BilinearUpsample, ConvNeXtBlock, TransposedConvUpsample
-from models.factory import (
+from samudra.datasets import InferenceDataset, TrainData
+from samudra.models.blocks import BilinearUpsample, ConvNeXtBlock, TransposedConvUpsample
+from samudra.models.factory import (
     create_block,
     create_downsample,
     create_upsample,
     get_activation_cl,
 )
-from utils.device import get_device
-from utils.train import pairwise
+from samudra.utils.device import get_device
+from samudra.utils.train import pairwise
 
 
 class BaseModel(torch.nn.Module):

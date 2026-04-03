@@ -7,6 +7,7 @@ from datasets import InferenceDataset, TrainData
 from utils.device import using_gpu
 from utils.outputs import InfOutput, TrainOutput, ValOutput
 from utils.writer import ZarrWriter
+from models.samudra import BaseModel
 
 
 class Stepper:
@@ -38,7 +39,7 @@ class Stepper:
     @staticmethod
     @torch.no_grad()
     def inference(
-        model: torch.nn.Module,
+        model: BaseModel,
         dataset: InferenceDataset,
         epoch: int,
         output_dir: Optional[str] = None,
